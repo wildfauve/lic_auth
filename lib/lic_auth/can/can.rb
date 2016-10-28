@@ -8,7 +8,7 @@ module LicAuth::Can
     end
 
     def can?(app_name:, resource: nil, action: nil)
-      Policy.find(@activities, app_name: app_name, resource: resource, action: action)
+      Policy.find(@activities, app_name: app_name, resource: resource.to_s, action: action.to_s)
     end
   end
 end
