@@ -1,6 +1,6 @@
 # Lic Auth
 
-Some things to help you build and call Lic API's secured by [Identity Service](https://github.com/LicElectric/identity_service)
+LIC Auth is a Ruby library that performs some common functions with Identity and JWTs.  Its like a post modern Night Club bouncer, for no reason really.
 
 ## Getting Started
 
@@ -8,7 +8,63 @@ Add `gem lic_auth` to the GemFury block of your gemfile.
 
 `bundle install`
 
+## Playing with Tokens
+
+Configure yourself a client that has access to the client credentials grant type.  Our internal systems will have this sort of permission.
+
+Assuming you have Identity running locally, and you have the client_id secret for your highly trusted client, then do this...
+
+```ruby
+require "lic_auth/client"
+
+authorisation = LicAuth::ClientCredentials.new(api_host: "http://localhost:5000", client_id: c, client_secret: s)
+token = authorisation.jwt
+```
+
+If all works well, the token will be JWT that has been signed by Identity.
+
+To decode the JWT, try this:
+
+```ruby
+LicAuth::Jwt.decode(token)
+```
+
+This should given you a decoded JWT, which might look a little like this:
+
+```ruby
+{
+  "iss"=>"https://id.lic.co.nz",
+  "sub"=>"c1df528e-1cba-480a-9f19-3704eea2c5ec",
+  "aud"=>"53be0fe74d61748ee5020000",
+  "exp"=>1483478858,
+  "amr"=>[],
+  "iat"=>1478208458,
+  "azp"=>"332cfa87-f32f-4766-9314-38c96863f36f"
+}
+```
+
+Then, you can get the system user's activities (the user is a system, in the Alice in Wonderland meaning of the sentence) by...
+
+```ruby
+LicAuth::Activities.for_token(j, api_host: "http://localhost:5000")
+```
+
+Which will return activities like:
+
+```ruby
+[
+  {"policy"=>"lic:identity:resource:activity:destroy"},
+  {"policy"=>"lic:identity:resource:activity:create"},
+  {"policy"=>"lic:identity:resource:activity:new"},
+  {"policy"=>"lic:identity:resource:activity:list"}
+]
+```
+
+
+
 ## Securing your API
+
+
 
 Lic Auth provides Rack middleware to verify that the caller has provided an Authorization header that contains a valid JWT signed by the identity service:
 
@@ -35,29 +91,6 @@ end
 ```
 
 _Note: There is also a Grape middleware to check the bearer token which is deprecated but still used by some services._
-
-## Calling Identity Service APIs
-
-To call Identity Service APIs you will need the following env vars:
-
-```
-FLICK_API_HOST=https://uat.lic.energy
-```
-
-Lic Auth contains a client for calling the Identity Service client credentials api:
-
-**Client Credentials token grant:**
-
-```ruby
-require "lic_auth/client"
-auth = LicAuth::ClientCredentials.new(
-  client_id: ENV["IDENTITY_CLIENT_ID"],
-  client_secret: ENV["IDENTITY_CLIENT_SECRET"]
-)
-
-auth.jwt         # JWT
-auth.auth_header # "Bearer #{jwt}"
-```
 
 ## Test Utilities
 

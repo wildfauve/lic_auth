@@ -63,7 +63,7 @@ module LicAuth
     # This internal class does not raise exceptions, please use the Client class and handle or let exceptions bubble up
     class ClientHttp
       include ::HTTParty
-      base_uri ENV["FLICK_API_HOST"]
+      base_uri ENV["LIC_API_HOST"]
       format :json
       read_timeout 10
     end

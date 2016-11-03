@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 module LicAuth
   class ClientCredentials
-    ENDPOINT = "/identity/oauth/token".freeze
+    ENDPOINT = "/oauth/token".freeze
 
-    def initialize(client_id:, client_secret:, api_host: ENV["FLICK_API_HOST"])
+    def initialize(client_id:, client_secret:, api_host: ENV["LIC_API_HOST"])
       @client_id = client_id
       @client_secret = client_secret
       @api_host = api_host
