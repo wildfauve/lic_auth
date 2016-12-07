@@ -7,8 +7,8 @@ module LicAuth
     class TokenChecker
       ENV_REQUEST_METHOD      = "REQUEST_METHOD".freeze
       ENV_AUTHORIZATION       = "HTTP_AUTHORIZATION".freeze
-      ENV_TOKEN               = "FLICK_AUTH_ID_TOKEN".freeze
-      ENV_JWT                 = "FLICK_AUTH_JWT".freeze
+      ENV_TOKEN               = "LIC_AUTH_ID_TOKEN".freeze
+      ENV_JWT                 = "LIC_AUTH_JWT".freeze
       URN_NOT_PRESENT         = "urn:lic:authentication:error:token_not_present".freeze
       URN_INVALID_FORMAT      = "urn:lic:authentication:error:token_invalid_format".freeze
       URN_VERIFICATION_FAILED = "urn:lic:authentication:error:token_verification_failed".freeze

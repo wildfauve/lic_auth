@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lic_auth (0.7.0)
+    lic_auth (0.7.1)
       httparty
       json-jwt
       multi_json
