@@ -19,13 +19,17 @@ module LicAuth::Can
     # lic:app_sales_product:resource:product:show
     # lic:app_sales_product:resource:product:*
     #
-    # Other policy types could also be defined (in the future). eg use-case
-    # lic:app_sales_product:use-case:design_product
+    # Policy Type 'context_resource'
+    # ------------------------------
+    # lic:app_id:context_resource:resource_name:action
     #
-    # Which would allow a more course grained approach to policy management
+    # A context resource is represents a resource, as well as requiring the user to
+    # hold a context assertion for a specific resource.
+    # e.g. lic:identity:context_resource:account:update provides access to account
+    # updates but is scoped by a specific account identifier
     #
     ATTRIBUTES = [:namespace, :app_name, :policy_type, :resource, :action].freeze
-    SUPPORTED_POLICY_TYPES = ["resource"].freeze
+    SUPPORTED_POLICY_TYPES = ["resource", "context_resource"].freeze
 
     attr_reader *ATTRIBUTES
     attr_reader :errors
@@ -63,12 +67,12 @@ module LicAuth::Can
 
     def self.policy_match?(authorized_policy, app_name:, resource:, action:)
       component_match?(authorized_policy.app_name, app_name) &&
-        component_match?(authorized_policy.resource, resource) &&
-        component_match?(authorized_policy.action, action)
+      component_match?(authorized_policy.resource, resource) &&
+      component_match?(authorized_policy.action, action)
     end
 
     def self.component_match?(authorized, requested)
-      requested.nil? || authorized == "*" || authorized == requested
+      !requested.present? || authorized == "*" || authorized == requested
     end
   end
 end

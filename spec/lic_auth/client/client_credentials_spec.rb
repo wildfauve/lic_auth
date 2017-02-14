@@ -19,7 +19,7 @@ describe LicAuth::ClientCredentials do
         client_secret: "mock_client_secret",
         grant_type:    "client_credentials"
       }
-      expect(LicAuth::Client).to receive(:post).with("/identity/oauth/token", base_uri: nil, body: expected_body).and_return(token_response)
+      expect(LicAuth::Client).to receive(:post).with("/oauth/token", base_uri: nil, body: expected_body).and_return(token_response)
 
       client_credentials.jwt
     end
