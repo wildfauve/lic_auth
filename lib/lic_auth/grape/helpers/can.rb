@@ -6,11 +6,11 @@ module LicAuth
     module Helpers
       module Can
         def jwt
-          env["FLICK_AUTH_JWT"]
+          env["LIC_AUTH_JWT"]
         end
 
         def id_token
-          env["FLICK_AUTH_ID_TOKEN"]
+          env["LIC_AUTH_ID_TOKEN"]
         end
 
         def can?(user: nil, id_token: nil, app_name:, resource:, action:)
