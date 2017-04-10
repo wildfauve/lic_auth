@@ -43,21 +43,26 @@ This should given you a decoded JWT, which might look a little like this:
 }
 ```
 
-Then, you can get the system user's activities (the user is a system, in the Alice in Wonderland meaning of the sentence) by...
+Then, you can get the system user's activities (the user is a system, in the Alice in Wonderland meaning of the sentence) by using the userinfo endpoint
 
 ```ruby
-LicAuth::Activities.for_token(j, api_host: "http://localhost:5000")
+LicAuth::Userinfo.for_token(j, api_host: "http://localhost:5000")
 ```
 
 Which will return activities like:
 
 ```ruby
-[
-  {"policy"=>"lic:identity:resource:activity:destroy"},
-  {"policy"=>"lic:identity:resource:activity:create"},
-  {"policy"=>"lic:identity:resource:activity:new"},
-  {"policy"=>"lic:identity:resource:activity:list"}
-]
+{"sub"=>"b6cedb19-f868-4ad8-a028-49d25fa34b8e",
+ "email_verified"=>true,
+ "preferred_name"=>"Dinsdale de Llama",
+ "preferred_username"=>"dinsdale@example.com",
+ "updated_at"=>"2017-04-11T10:47:30+12:00",
+ "allowed_activities"=>
+  ["lic:identity:resource:termsconditions:update",
+   "lic:identity:resource:termsconditions:show",
+   "lic:identity:resource:termsconditions:create",
+   "lic:surveil:resource:authz:list",
+   "lic:identity:resource:account:create"]
 ```
 
 
