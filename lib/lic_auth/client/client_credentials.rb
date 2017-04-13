@@ -3,7 +3,7 @@ module LicAuth
   class ClientCredentials
     ENDPOINT = "/oauth/token".freeze
 
-    def initialize(client_id:, client_secret:, api_host: ENV["LIC_API_HOST"])
+    def initialize(client_id:, client_secret:, api_host: ENV["LIC_IDENTITY_HOST"])
       @client_id = client_id
       @client_secret = client_secret
       @api_host = api_host

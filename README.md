@@ -4,20 +4,26 @@ LIC Auth is a Ruby library that performs some common functions with Identity and
 
 ## Getting Started
 
-Add `gem lic_auth` to the GemFury block of your gemfile.
+Add `gem 'lic_auth', git: "https://github.com/wildfauve/lic_auth.git"` to your gemfile.
 
 `bundle install`
 
+## Identity Host
+
+This can either be configured in an environment variable; `ENV["LIC_IDENTITY_HOST"]`
+
+This can also be passed in on most calls.
+
 ## Playing with Tokens
 
-Configure yourself a client that has access to the client credentials grant type.  Our internal systems will have this sort of permission.
+You can get a token to use for APIs by using a client that has the client credentials grant type configured.
 
 Assuming you have Identity running locally, and you have the client_id secret for your highly trusted client, then do this...
 
 ```ruby
 require "lic_auth/client"
 
-authorisation = LicAuth::ClientCredentials.new(api_host: "http://localhost:5000", client_id: c, client_secret: s)
+authorisation = LicAuth::ClientCredentials.new(api_host: "https://identity.dev.mindainfo.io", client_id: c, client_secret: s)
 token = authorisation.jwt
 ```
 
@@ -26,7 +32,7 @@ If all works well, the token will be JWT that has been signed by Identity.
 To decode the JWT, try this:
 
 ```ruby
-LicAuth::Jwt.decode(token)
+  LicAuth::Jwt.decode(token)
 ```
 
 This should given you a decoded JWT, which might look a little like this:
@@ -46,7 +52,7 @@ This should given you a decoded JWT, which might look a little like this:
 Then, you can get the system user's activities (the user is a system, in the Alice in Wonderland meaning of the sentence) by using the userinfo endpoint
 
 ```ruby
-LicAuth::Userinfo.for_token(j, api_host: "http://localhost:5000")
+LicAuth::Userinfo.for_token(jwt, api_host: "http://localhost:5000")
 ```
 
 Which will return activities like:
@@ -65,11 +71,31 @@ Which will return activities like:
    "lic:identity:resource:account:create"]
 ```
 
+## Identity APIs
+
+## Accounts
+
+Get all the accounts registered.
+
+`LicAuth::Account.all(jwt)`
+
+And show a particular account.
+
+`LicAuth::Account.show(jwt, account_url: "<url>")`
+
+### Concepts
+
+You can get various concepts available from Identity.
+
+`LicAuth::Concepts.scopes`
+
+or Roles
+
+`LicAuth::Concepts.roles`
 
 
 ## Securing your API
-
-
+TODO: Update this section with non-web framework methods for securing APIs.
 
 Lic Auth provides Rack middleware to verify that the caller has provided an Authorization header that contains a valid JWT signed by the identity service:
 
