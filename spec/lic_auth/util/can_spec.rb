@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 require "spec_helper"
 require "lic_auth/util/can"
-require "lic_auth/client"
 
 describe LicAuth::Util::Can do
   subject { LicAuth::Util::Can }
