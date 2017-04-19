@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+require 'lic_auth/client'
+
 module LicAuth
   module Util
     class Can
